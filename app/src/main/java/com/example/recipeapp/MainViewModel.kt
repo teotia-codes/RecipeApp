@@ -6,36 +6,41 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipeapp.ui.theme.Category
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
+class MainViewModel : ViewModel() {
 
-class MainViewModel : ViewModel(){
-private val _categoryState = mutableStateOf(RecipeState())
-val categoriesState : State<RecipeState> = _categoryState
+    private val _categorieState = mutableStateOf(RecipeState())
+    val categoriesState: State<RecipeState> = _categorieState
+
     init {
         fetchCategories()
     }
 
-private  fun  fetchCategories() {
-    viewModelScope.launch {
-        try {
-          val response = recipeService.getCategories()
-          _categoryState.value = _categoryState.value.copy(
-              list = response.categories,
-              loading = false,
-              error = null
-          )
-        } catch (e : Exception){
-        _categoryState.value = _categoryState.value.copy(
-            loading = false,
-            error= "Error fetching Categories ${e.message}"
-            )
+
+    private fun fetchCategories(){
+        viewModelScope.launch {
+            try {
+                val response = recipeService.getCategories()
+                _categorieState.value = _categorieState.value.copy(
+                    list = response.categories,
+                    loading = false,
+                    error = null
+                )
+
+            }catch (e: Exception){
+                _categorieState.value = _categorieState.value.copy(
+                    loading = false,
+                    error = "Error fetching Categories ${e.message}"
+                )
+            }
         }
     }
-}
+
     data class RecipeState(
         val loading: Boolean = true,
         val list: List<Category> = emptyList(),
-        val error: String ?= null
+        val error: String? = null
     )
 
 }
