@@ -50,6 +50,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.navigation:navigation-compose:2.7.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     //Network call
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
